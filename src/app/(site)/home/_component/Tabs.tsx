@@ -1,0 +1,50 @@
+'use client'
+
+import { useParams } from 'next/navigation'
+import React, { useMemo } from 'react'
+import clsx from 'clsx'
+import Link from 'next/link'
+
+const Tabs = () => {
+  const params = useParams()
+  const tabs = useMemo(
+    () => [
+      {
+        label: '為你推薦',
+        href: '/home/recommend',
+        isActive: params?.slug === 'recommend',
+      },
+      {
+        label: '正在跟隨',
+        href: '/home/following',
+        isActive: params?.slug === 'following',
+      },
+    ],
+    [params],
+  )
+  return (
+    <div className='flex w-full justify-between border-b-[1px] border-gray-600'>
+      {tabs.map((tab) => (
+        <Link
+          href={tab.href}
+          key={tab.href}
+          className='w-full flex items-center justify-center hover:bg-gray-700 text-white'
+        >
+          <div className='flex flex-col'>
+            <div
+              className={clsx(
+                'py-3 text-gray-400',
+                tab.isActive && 'font-bold text-white',
+              )}
+            >
+              {tab.label}
+            </div>
+            <div className={clsx(tab.isActive && 'w-full h-1 rounded-full bg-sky-500')} />
+          </div>
+        </Link>
+      ))}
+    </div>
+  )
+}
+
+export default Tabs

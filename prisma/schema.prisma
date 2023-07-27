@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  hashedPassword String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  userId            String? @default(uuid())
+  avatar            String?
+  profileBackground String?
+  profileMessage    String?
+
+  tweets Tweet[] @relation("UserPosts")
+
+  likeTweets    Tweet[]  @relation("LikeTweets", fields: [likeTweetsIds], references: [id])
+  likeTweetsIds String[] @db.ObjectId
+
+  followBy     User[]   @relation("Follow", fields: [followByIds], references: [id])
+  followByIds  String[] @db.ObjectId
+  following    User[]   @relation("Follow", fields: [followingIds], references: [id])
+  followingIds String[] @db.ObjectId
+
+  notifications Notification[]
+  accounts      Account[]
+
+  @@map("user")
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  token_type        String?
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  id_token          String? @db.String
+  scope             String?
+  session_state     String?
+  expires_at        Int?
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @db.ObjectId
+
+  @@unique([provider, providerAccountId])
+  @@map("account")
+}
+
+model Tweet {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String?
+  createdAt DateTime @default(now())
+
+  author   User   @relation("UserPosts", fields: [authorId], references: [id])
+  authorId String @db.ObjectId
+
+  likeFrom    User[]   @relation("LikeTweets", fields: [likeFromIds], references: [id])
+  likeFromIds String[] @db.ObjectId
+
+  comments     Tweet[] @relation("Comments")
+  responseFrom Tweet?  @relation("Comments", fields: [responseId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  responseId   String? @db.ObjectId
+
+  @@map("tweet")
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  createdAt DateTime @default(now())
+
+  from   User   @relation(fields: [fromId], references: [id])
+  fromId String @db.ObjectId
+
+  @@map("notification")
+}
