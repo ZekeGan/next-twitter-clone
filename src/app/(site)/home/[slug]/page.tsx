@@ -1,14 +1,11 @@
 import getHomeTweets from '@/actions/getHomeTweets'
 import React from 'react'
-import TweetBox from '../../../../components/layout/content/TweetBox'
+import TweetBox from '@/components/layout/content/TweetBox'
 
 const Following = async ({ params: { slug } }: { params: { slug: string } }) => {
-  const res = await getHomeTweets(slug)
-  return (
-    <div>
-      <TweetBox />
-    </div>
-  )
+  const tweets = await getHomeTweets(slug)
+
+  return tweets.map((tweet) => <TweetBox key={tweet.id} data={tweet} />)
 }
 
 export default Following

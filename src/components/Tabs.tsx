@@ -1,30 +1,21 @@
 'use client'
-
-import { useParams } from 'next/navigation'
 import React, { useMemo } from 'react'
 import clsx from 'clsx'
 import Link from 'next/link'
+import useHomeTabsRoutes from '@/hooks/useHomeTabsRoutes'
 
-const Tabs = () => {
-  const params = useParams()
-  const tabs = useMemo(
-    () => [
-      {
-        label: '為你推薦',
-        href: '/home/recommend',
-        isActive: params?.slug === 'recommend',
-      },
-      {
-        label: '正在跟隨',
-        href: '/home/following',
-        isActive: params?.slug === 'following',
-      },
-    ],
-    [params],
-  )
+interface TabsProps {
+  routes: {
+    label: string
+    href: string
+    isActive: boolean
+  }[]
+}
+
+const Tabs: React.FC<TabsProps> = ({ routes }) => {
   return (
     <div className='flex w-full justify-between border-b-[1px] border-gray-600'>
-      {tabs.map((tab) => (
+      {routes.map((tab) => (
         <Link
           href={tab.href}
           key={tab.href}

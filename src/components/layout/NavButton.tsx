@@ -28,7 +28,7 @@ const NavButton: React.FC<NavButtonProps> = ({
           <span
             className={clsx(
               `hidden lg:block text-center text-lg text-white`,
-              active && ' font-semibold',
+              active ? 'font-bold' : 'font-light',
             )}
           >
             {label}

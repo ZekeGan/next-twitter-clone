@@ -17,13 +17,14 @@ const LeftSideBar = async () => {
         border-r-[1px] 
         border-gray-600'
     >
-      <div className='flex justify-end lg:items-center lg:w-80'>
+      <div className='flex justify-end lg:items-center lg:w-60'>
         <div className='flex justify-between flex-col h-full lg:w-52'>
           <NavList currentUser={currentUser!} />
           <UserBox
             userId={currentUser?.userId || 'UserNotFound'}
             isProfile
             name={currentUser?.name! || 'UserNotFound'}
+            image={currentUser?.image || ''}
           />
         </div>
       </div>

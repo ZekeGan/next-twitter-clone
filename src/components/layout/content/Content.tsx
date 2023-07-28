@@ -10,7 +10,7 @@ interface ContentProps {
 
 const Content: React.FC<ContentProps> = ({ children, pageText, isBack = false }) => {
   return (
-    <div className=' border-r-[1px] border-gray-600 w-[40rem]'>
+    <div className=' border-r-[1px] border-gray-600 w-[40rem] '>
       <div className=' flex items-center mb-3 px-3 py-2 space-x-2'>
         {isBack && (
           <GoBack href='/home/recomment'>
@@ -19,7 +19,6 @@ const Content: React.FC<ContentProps> = ({ children, pageText, isBack = false })
         )}
         <h1 className='text-white text-xl font-bold'>{pageText}</h1>
       </div>
-
       {children}
     </div>
   )

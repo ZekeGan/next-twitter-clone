@@ -32,14 +32,14 @@ const useRoutes = (userId: string) => {
       },
       {
         label: '通知',
-        href: '/noticification',
+        href: '/notification',
         icon: BiSolidBell,
-        active: pathname === 'noticification',
+        active: pathname === 'notification',
         showLabel: true,
       },
       {
         label: '個人資料',
-        href: `/user/s${userId}`,
+        href: `/user/s${userId}/tweet`,
         icon: BiSolidUser,
         active: pathname === 'user',
         showLabel: true,

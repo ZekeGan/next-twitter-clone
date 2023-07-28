@@ -7,9 +7,15 @@ interface TextareaProps {
   register: UseFormRegister<FieldValues>
   id: string
   placeholder?: string
+  isUnderline?: boolean
 }
 
-const Textarea: React.FC<TextareaProps> = ({ register, id, placeholder }) => {
+const Textarea: React.FC<TextareaProps> = ({
+  register,
+  id,
+  placeholder,
+  isUnderline,
+}) => {
   const [value, setValue] = useState('')
   const rows = value.split('\n').length
   const [isFocus, setIsFocus] = useState(false)
@@ -17,8 +23,8 @@ const Textarea: React.FC<TextareaProps> = ({ register, id, placeholder }) => {
   return (
     <textarea
       className={clsx(
-        'bg-transparent w-full p-2 resize-none outline-none text-white overflow-hidden',
-        isFocus && 'border-b-[1px] border-gray-600',
+        'bg-transparent w-full py-2 resize-none outline-none text-white overflow-hidden',
+        isUnderline && isFocus && 'border-b-[1px] border-gray-600',
       )}
       placeholder={placeholder}
       id={id}
