@@ -2,8 +2,8 @@ import '@/styles/globals.css'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import ToastContext from '@/app/_context/ToastContext'
-import AuthContext from '@/app/_context/AuthContext'
+import ToastContext from '@/context/ToastContext'
+import AuthContext from '@/context/AuthContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
