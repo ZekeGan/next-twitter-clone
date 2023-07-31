@@ -28,7 +28,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/api/register"
+    "src/app/api/register",
+    "src/app/api/likeTweet"
   ],
   "exclude": ["node_modules", ".next"]
 }

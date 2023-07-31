@@ -13,7 +13,6 @@ const TweetInput = () => {
   })
   const onSubmit = (data: FieldValues) => {
     setIsLoading(true)
-    console.log(data)
     axios
       .post('/api/postTweet', data)
       .then((res) => {

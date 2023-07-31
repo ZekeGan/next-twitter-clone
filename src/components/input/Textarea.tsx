@@ -8,6 +8,7 @@ interface TextareaProps {
   id: string
   placeholder?: string
   isUnderline?: boolean
+  action?: (value: boolean) => void
 }
 
 const Textarea: React.FC<TextareaProps> = ({
@@ -15,10 +16,16 @@ const Textarea: React.FC<TextareaProps> = ({
   id,
   placeholder,
   isUnderline,
+  action,
 }) => {
   const [value, setValue] = useState('')
   const rows = value.split('\n').length
   const [isFocus, setIsFocus] = useState(false)
+
+  const handleOnFocus = () => {
+    setIsFocus(true)
+    if (action) action(true)
+  }
 
   return (
     <textarea
@@ -29,10 +36,13 @@ const Textarea: React.FC<TextareaProps> = ({
       placeholder={placeholder}
       id={id}
       rows={rows}
-      onFocus={() => setIsFocus(true)}
+      onFocus={handleOnFocus}
       {...register(id, {
         required: true,
-        onBlur: () => setIsFocus(false),
+        onBlur: () => {
+          setIsFocus(false)
+          if (action) action(false)
+        },
         onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => setValue(e.target.value),
       })}
     />

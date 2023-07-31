@@ -24,11 +24,15 @@ model User {
   avatar            String?
   profileBackground String?
   profileMessage    String?
+  geolocation       String?
 
   tweets Tweet[] @relation("UserPosts")
 
   likeTweets    Tweet[]  @relation("LikeTweets", fields: [likeTweetsIds], references: [id])
   likeTweetsIds String[] @db.ObjectId
+
+  retweetTweets    Tweet[]  @relation("Retweet", fields: [retweetTweetsIds], references: [id])
+  retweetTweetsIds String[] @db.ObjectId
 
   followBy     User[]   @relation("Follow", fields: [followByIds], references: [id])
   followByIds  String[] @db.ObjectId
@@ -71,6 +75,9 @@ model Tweet {
 
   likeFrom    User[]   @relation("LikeTweets", fields: [likeFromIds], references: [id])
   likeFromIds String[] @db.ObjectId
+
+  retweetFrom    User[]   @relation("Retweet", fields: [retweetFromIds], references: [id])
+  retweetFromIds String[] @db.ObjectId
 
   comments     Tweet[] @relation("Comments")
   responseFrom Tweet?  @relation("Comments", fields: [responseId], references: [id], onDelete: NoAction, onUpdate: NoAction)

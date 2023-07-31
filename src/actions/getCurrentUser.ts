@@ -7,7 +7,10 @@ const getCurrentUser = async () => {
     const session = await getServerSession(authOption)
     if (!session?.user?.name || !session?.user?.email) return null
 
-    const user = await prisma.user.findUnique({ where: { email: session.user.email } })
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      include: { followBy: true, following: true },
+    })
     if (!user) return null
 
     return user

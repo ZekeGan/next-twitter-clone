@@ -36,7 +36,7 @@ const CommentInput: React.FC<CommentInputProps> = ({ tweet }) => {
         <Avatar image={currentUser?.image} />
       </div>
       <div className='col-start-2 space-x-2'>
-        <span className='text-gray-600'>回覆給</span>
+        <span className='text-gray-600 text-sm pt-1'>回覆給</span>
         <Link href={`/user/${tweet?.author.name}`} className='text-sky-600 text-sm'>
           @{tweet?.author.userId}
         </Link>

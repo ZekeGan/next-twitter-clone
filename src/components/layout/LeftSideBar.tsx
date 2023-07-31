@@ -8,6 +8,9 @@ const LeftSideBar = async () => {
   return (
     <div
       className=' 
+        fixed
+        w-24
+        lg:w-80
         flex
         justify-center
         lg:justify-end
@@ -17,7 +20,7 @@ const LeftSideBar = async () => {
         border-r-[1px] 
         border-gray-600'
     >
-      <div className='flex justify-end lg:items-center lg:w-60'>
+      <div className='flex justify-end lg:items-center lg:w-40'>
         <div className='flex justify-between flex-col h-full lg:w-52'>
           <NavList currentUser={currentUser!} />
           <UserBox
