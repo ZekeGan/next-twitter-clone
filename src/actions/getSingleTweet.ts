@@ -15,7 +15,7 @@ export default async function getSingleTweet(tweetId: string) {
             author: true,
             responseFrom: true,
             likeFrom: true,
-            comments: true,
+            comments: { orderBy: { createdAt: 'desc' } },
             retweetFrom: true,
           },
         },

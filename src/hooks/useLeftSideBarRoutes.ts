@@ -39,7 +39,7 @@ const useRoutes = (userId: string) => {
       },
       {
         label: '個人資料',
-        href: `/user/s${userId}/tweet`,
+        href: `/user/${userId}/tweet`,
         icon: BiSolidUser,
         active: pathname === 'user',
         showLabel: true,

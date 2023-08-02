@@ -1,6 +1,6 @@
 import prisma from '@/libs/prismadb'
 
-export default async function getHomeTweets(slug: string) {
+export default async function getHomeRecommendTweets() {
   try {
     const tweets = await prisma.tweet.findMany({
       orderBy: { createdAt: 'desc' },

@@ -1,28 +1,12 @@
-import getAllUsers from '@/actions/getAllUsers'
-import Button from '@/components/input/Button'
-import UserBox from './UserBox'
+import getNotFollowUsers from '@/actions/getNotFollowUsers'
+import RightSideBarFollowList from './RightSideBarFollowList'
 
 const RightSideBar = async () => {
-  const users = await getAllUsers()
+  const users = await getNotFollowUsers()
+
   return (
-    <div className='hidden lg:block p-5'>
-      <div className='py-2 bg-twi-700 rounded-xl'>
-        <h1 className='text-white text-lg font-bold px-3'>跟隨誰</h1>
-        {users.map((user) => (
-          <UserBox
-            key={user.userId}
-            name={user.name}
-            userId={user.userId}
-            image={user.image}
-          >
-            <div className=' w-14'>
-              <Button>
-                <span className='px-2 text-sm'>跟隨</span>
-              </Button>
-            </div>
-          </UserBox>
-        ))}
-      </div>
+    <div className='hidden lg:block p-5 col-start-3'>
+      <RightSideBarFollowList users={users} />
     </div>
   )
 }

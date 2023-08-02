@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@headlessui/react':
+    specifier: ^1.7.16
+    version: 1.7.16(react-dom@18.2.0)(react@18.2.0)
   '@next-auth/prisma-adapter':
     specifier: ^1.0.7
     version: 1.0.7(@prisma/client@5.0.0)(next-auth@4.22.3)
@@ -50,6 +53,9 @@ dependencies:
   next-auth:
     specifier: ^4.22.3
     version: 4.22.3(next@13.4.10)(react-dom@18.2.0)(react@18.2.0)
+  next-cloudinary:
+    specifier: ^4.16.3
+    version: 4.16.3(next@13.4.10)(react@18.2.0)
   postcss:
     specifier: 8.4.26
     version: 8.4.26
@@ -99,6 +105,29 @@ packages:
       regenerator-runtime: 0.13.11
     dev: false
 
+  /@cloudinary-util/url-loader@3.10.0:
+    resolution: {integrity: sha512-RNp6WayU6e5ikA7yCRqNhp0lOwLl82vLco9EwpES2si6Hb+g9yEaeTYvobD44ISQeJUnPl6e1c/AEYVSjfzwrg==}
+    dependencies:
+      '@cloudinary-util/util': 2.2.1
+      '@cloudinary/url-gen': 1.11.0
+    dev: false
+
+  /@cloudinary-util/util@2.2.1:
+    resolution: {integrity: sha512-MEIqn5WtPP3mxSMTNNfpqlGS1UquAXcjmVdY/t/edD/ZWVjI85viBiOMIuF0W6n6UF5gTstLymfQNYx0YO/GZg==}
+    dev: false
+
+  /@cloudinary/transformation-builder-sdk@1.4.0:
+    resolution: {integrity: sha512-atU25SFAmR4aXlPHDs7fERmcl0OSnwQl80b5Fy3unvwHSj10fnqHBdLeeOEBNaOXdF3WQLmNSGMkOV8IlDPfMA==}
+    dependencies:
+      '@cloudinary/url-gen': 1.11.0
+    dev: false
+
+  /@cloudinary/url-gen@1.11.0:
+    resolution: {integrity: sha512-jShJoh+5JQfsMnh/NUqe8Z2EzZo/++BQ/CuF/VND4hA7zNpXn6vYi5JMIZ4YvLGRrqHuMtqCFahaTe1RBsLJJQ==}
+    dependencies:
+      '@cloudinary/transformation-builder-sdk': 1.4.0
+    dev: false
+
   /@eslint-community/eslint-utils@4.4.0(eslint@8.45.0):
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -134,6 +163,18 @@ packages:
   /@eslint/js@8.44.0:
     resolution: {integrity: sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: false
+
+  /@headlessui/react@1.7.16(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-2MphIAZdSUacZBT6EXk8AJkj+EuvaaJbtCyHTJrPsz8inhzCl7qeNPI1uk1AUvCgWylVtdN8cVVmnhUDPxPy3g==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+      react-dom: ^16 || ^17 || ^18
+    dependencies:
+      client-only: 0.0.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /@humanwhocodes/config-array@0.11.10:
@@ -2165,6 +2206,18 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       uuid: 8.3.2
+    dev: false
+
+  /next-cloudinary@4.16.3(next@13.4.10)(react@18.2.0):
+    resolution: {integrity: sha512-dkwvSAFyOvSBd+gBeeI0UaQjnJcXDs1FQYrXIcrF0outdG//02VNXUA45ieOYKhT2/f9NTnHsyfRhizEb0hu/A==}
+    peerDependencies:
+      next: ^12 || ^13
+      react: ^17 || ^18
+    dependencies:
+      '@cloudinary-util/url-loader': 3.10.0
+      '@cloudinary-util/util': 2.2.1
+      next: 13.4.10(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
     dev: false
 
   /next@13.4.10(react-dom@18.2.0)(react@18.2.0):

@@ -1,21 +1,35 @@
-import getHomeTweets from '@/actions/getHomeTweets'
+import getHomeTweets from '@/actions/getHomeRecommendTweets'
 import React from 'react'
 import TweetBox from '@/components/layout/TweetBox/TweetBox'
 import getCurrentUser from '@/actions/getCurrentUser'
-import Avatar from '@/components/Avatar'
 import TweetResponse from '@/components/layout/TweetBox/TweetResponse'
+import getHomeFollowingTweets from '@/actions/getHomeFollowingTweets'
+import getHomeRecommendTweets from '@/actions/getHomeRecommendTweets'
 
 const Following = async ({ params: { slug } }: { params: { slug: string } }) => {
-  const tweets = await getHomeTweets(slug)
   const currentUser = await getCurrentUser()
 
-  if (!tweets || !currentUser) return <div className='text-white'>Error</div>
+  if (!currentUser) return <div className='text-white'>Error</div>
 
-  return tweets.map((tweet) => (
-    <TweetBox key={tweet.id} data={tweet} currentUser={currentUser}>
-      {tweet.responseFrom && <TweetResponse tweet={tweet.responseFrom} />}
-    </TweetBox>
-  ))
+  if (slug === 'following') {
+    const followingTweets = await getHomeFollowingTweets()
+    return followingTweets.map((tweet) => (
+      <TweetBox key={tweet.id} data={tweet} currentUser={currentUser}>
+        {tweet.responseFrom && <TweetResponse tweet={tweet.responseFrom} />}
+      </TweetBox>
+    ))
+  }
+
+  if (slug === 'recommend') {
+    const recommendTweets = await getHomeRecommendTweets()
+    return recommendTweets.map((tweet) => (
+      <TweetBox key={tweet.id} data={tweet} currentUser={currentUser}>
+        {tweet.responseFrom && <TweetResponse tweet={tweet.responseFrom} />}
+      </TweetBox>
+    ))
+  }
+
+  return null
 }
 
 export default Following

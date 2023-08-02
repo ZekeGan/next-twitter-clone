@@ -1,8 +1,6 @@
-import { MdClose } from 'react-icons/md'
 import { BsTwitter } from 'react-icons/bs'
 import AuthForm from './_component/AuthForm'
 
-//flex flex-col min-h-full justify-center py-12 sm:px-6 lg:px-8 bg-gray-100
 export default function Auth() {
   return (
     <div

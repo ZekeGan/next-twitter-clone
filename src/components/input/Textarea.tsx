@@ -1,6 +1,7 @@
 'use client'
+
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FieldValues, UseFormRegister } from 'react-hook-form'
 
 interface TextareaProps {
@@ -9,6 +10,9 @@ interface TextareaProps {
   placeholder?: string
   isUnderline?: boolean
   action?: (value: boolean) => void
+  label?: string
+  value?: string
+  border?: boolean
 }
 
 const Textarea: React.FC<TextareaProps> = ({
@@ -16,36 +20,68 @@ const Textarea: React.FC<TextareaProps> = ({
   id,
   placeholder,
   isUnderline,
-  action,
+  label,
+  border,
+  value = '',
 }) => {
-  const [value, setValue] = useState('')
-  const rows = value.split('\n').length
+  const [innerValue, setValue] = useState(value!)
+  const rows = innerValue.split('\n').length
   const [isFocus, setIsFocus] = useState(false)
 
-  const handleOnFocus = () => {
-    setIsFocus(true)
-    if (action) action(true)
+  if (!border) {
+    return (
+      <textarea
+        className={clsx(
+          'bg-transparent w-full py-2 resize-none outline-none text-white overflow-hidden',
+          isUnderline && isFocus && 'border-b-[1px] border-gray-600',
+        )}
+        placeholder={placeholder}
+        id={id}
+        rows={rows}
+        onFocus={() => setIsFocus(true)}
+        {...register(id, {
+          required: true,
+          onBlur: () => setIsFocus(false),
+          onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setValue(e.target.value),
+        })}
+      />
+    )
   }
 
   return (
-    <textarea
+    <div
       className={clsx(
-        'bg-transparent w-full py-2 resize-none outline-none text-white overflow-hidden',
-        isUnderline && isFocus && 'border-b-[1px] border-gray-600',
+        'rounded-sm px-2 py-1',
+        isFocus || value ? 'ring-sky-400 ring-2' : 'ring-1 ring-gray-400',
       )}
-      placeholder={placeholder}
-      id={id}
-      rows={rows}
-      onFocus={handleOnFocus}
-      {...register(id, {
-        required: true,
-        onBlur: () => {
-          setIsFocus(false)
-          if (action) action(false)
-        },
-        onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => setValue(e.target.value),
-      })}
-    />
+    >
+      <div
+        className={clsx(
+          'transition relative leading-6 origin-left text-md',
+          isFocus || value ? 'text-sky-400' : 'text-gray-400',
+          isFocus || value ? '' : 'translate-y-[50%] scale-110',
+        )}
+      >
+        {label}
+      </div>
+      <textarea
+        className={clsx(
+          'bg-transparent w-full py-2 resize-none outline-none text-white overflow-hidden',
+          isUnderline && isFocus && 'border-b-[1px] border-gray-600',
+        )}
+        placeholder={placeholder}
+        id={id}
+        rows={rows}
+        onFocus={() => setIsFocus(true)}
+        {...register(id, {
+          required: true,
+          onBlur: () => setIsFocus(false),
+          onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setValue(e.target.value),
+        })}
+      />
+    </div>
   )
 }
 

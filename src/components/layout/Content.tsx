@@ -6,44 +6,59 @@ import clsx from 'clsx'
 
 interface ContentProps {
   children: React.ReactNode
-  subChildren?: React.ReactNode 
+  subChildren?: React.ReactNode
   pageText: string
   backUrl?: string
 }
 
-const Content: React.FC<ContentProps> = ({ children,subChildren, pageText, backUrl }) => {
+const Content: React.FC<ContentProps> = ({
+  children,
+  subChildren,
+  pageText,
+  backUrl,
+}) => {
   const router = useRouter()
 
   return (
-    <div 
-      className={clsx(`
-        grid 
-        grid-rows-[3rem_auto]
+    <div
+      className={clsx(
+        `col-start-2 
+        grid
         border-r-[1px] 
-        border-gray-600 
-        w-[40rem] 
-        ml-24 
-        lg:ml-80 
-        min-h-screen`,
-        !!subChildren ? 'grid-rows-[5rem_auto]' : 'grid-rows-[3rem_auto]' 
+      border-gray-600 ]
+        min-h-screen 
+        w-[40rem]`,
+        !!subChildren ? 'grid-rows-[7rem_auto]' : 'grid-rows-[4rem_auto]',
       )}
     >
-      <div className=' row-start-1 fixed min-h-[3rem] flex flex-col bg-twi-900 backdrop-blur-sm bg-opacity-50 w-[40rem]'>
-       <div className='flex items-center mb-3 px-3 py-2 space-x-2'>
-        {!!backUrl && (
-          <div onClick={() => router.push(backUrl)} className='cursor-pointer'>
-            <BiLeftArrowAlt size={30} className='text-white' />
+      <div className='w-full row-start-1 '>
+        <div
+          className=' 
+            fixed 
+            flex 
+            flex-col 
+            justify-between
+            bg-twi-900 
+            backdrop-blur-sm
+            w-[40rem]
+            bg-opacity-50 
+            border-r-[1px] 
+            border-gray-600 
+            z-10'
+        >
+          <div className='flex items-center mb-3 px-3 py-2 space-x-2'>
+            {!!backUrl && (
+              <div onClick={() => router.push(backUrl)} className='cursor-pointer'>
+                <BiLeftArrowAlt size={30} className='text-white' />
+              </div>
+            )}
+            <h1 className='text-white text-xl font-bold'>{pageText}</h1>
           </div>
-        )}
-        <h1 className='text-white text-xl font-bold'>{pageText}</h1>
-        </div> 
-        {subChildren}
+          <div>{subChildren}</div>
+        </div>
       </div>
 
-      <div className=' row-start-2'>
-        {children}
-      </div>
-
+      <div className=' row-start-2'>{children}</div>
     </div>
   )
 }

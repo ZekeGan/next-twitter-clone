@@ -1,26 +1,71 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import Image from 'next/image'
 import Avatar from '@/components/Avatar'
 import Button from '@/components/input/Button'
-import { IoLocationOutline, IoCalendarOutline } from 'react-icons/io5'
+import { IoLocationOutline, IoCalendarOutline, IoLink } from 'react-icons/io5'
 import { User } from '@prisma/client'
 import { format } from 'date-fns'
 import SettingModal from './SettingModal'
+import Link from 'next/link'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import Loading from '@/components/loading/Loading'
+import { useRouter } from 'next/navigation'
 
 interface UserInfoProps {
   data: User & {
     following: User[]
     followBy: User[]
   }
+  currentUser: User
+  isCurrentUser: boolean
 }
 
-const UserInfo: React.FC<UserInfoProps> = ({ data }) => {
+const UserInfo: React.FC<UserInfoProps> = ({ data, isCurrentUser, currentUser }) => {
+  const router = useRouter()
   const [isOpenModal, setIsOpenModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  console.log(data.followBy)
+
+  const isFollowing = useMemo(
+    () => data.followBy.some((user) => user.id === currentUser.id),
+    [currentUser, data],
+  )
+
+  const handleFollow = () => {
+    setIsLoading(true)
+    axios
+      .post('/api/following/follow', { targetUserId: data.id })
+      .then(() => {
+        router.refresh()
+      })
+      .catch((err) => toast.error(err))
+      .finally(() => setIsLoading(false))
+  }
+
+  const handleUnfollow = () => {
+    setIsLoading(true)
+    axios
+      .put('/api/following/unfollow', { targetUserId: data.id })
+      .then(() => {
+        router.refresh()
+      })
+      .catch((err) => toast.error(err))
+      .finally(() => setIsLoading(false))
+  }
+
   return (
     <>
-      <SettingModal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)} />
+      <Loading isLoading={isLoading} />
+      <SettingModal
+        isOpen={isOpenModal}
+        onClose={() => setIsOpenModal(false)}
+        data={data}
+      />
+
       <div>
         <div className='relative'>
           <div className='w-full h-48 bg-gray-500 relative flex items-center justify-center overflow-hidden'>
@@ -42,9 +87,19 @@ const UserInfo: React.FC<UserInfoProps> = ({ data }) => {
           <div className=' h-12'>
             <div className='flex justify-end'>
               <div className='w-30'>
-                <Button secondary onClick={() => setIsOpenModal(true)}>
-                  <span className='px-2'>編輯個人資料</span>
-                </Button>
+                {isCurrentUser ? (
+                  <Button secondary onClick={() => setIsOpenModal(true)}>
+                    <span className='px-2'>編輯個人資料</span>
+                  </Button>
+                ) : isFollowing ? (
+                  <Button secondary onClick={handleUnfollow}>
+                    <span className='px-2'>跟隨中</span>
+                  </Button>
+                ) : (
+                  <Button onClick={handleFollow}>
+                    <span className='px-2'>跟隨</span>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -57,11 +112,23 @@ const UserInfo: React.FC<UserInfoProps> = ({ data }) => {
             <p className='text-white'>{data.profileMessage}</p>
           </div>
 
-          <div className='flex space-x-3'>
+          <div className='flex space-x-4'>
             {data.geolocation && (
               <div className='flex space-x-1'>
                 <IoLocationOutline size={20} className='text-gray-500' />
                 <span className='text-gray-500 text-sm'>{data.geolocation}</span>
+              </div>
+            )}
+
+            {data.website && (
+              <div className='flex space-x-1'>
+                <IoLink size={20} className='text-gray-500' />
+                <Link
+                  href={data.website}
+                  className='text-sky-500 text-sm hover:underline'
+                >
+                  {data.website}
+                </Link>
               </div>
             )}
 

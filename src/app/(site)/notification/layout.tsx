@@ -5,7 +5,7 @@ import Content from '@/components/layout/Content'
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className='flex'>
+    <div className='grid grid-cols-[6rem_40rem_auto] lg:grid-cols-[23rem_40rem_auto]'>
       <LeftSideBar />
       <Content pageText='通知'>{children}</Content>
       <RightSideBar />

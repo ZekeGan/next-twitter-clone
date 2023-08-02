@@ -1,12 +1,15 @@
+'use client'
 import Avatar from '@/components/Avatar'
 import clsx from 'clsx'
-import React from 'react'
+import React, { useState } from 'react'
+import UserBoxModal from './LeftSideBarModal'
 interface UserBoxProps {
-  name: string | null
-  userId: string | null
-  image?: string | null
+  name: string
+  userId: string
+  image?: string
   isProfile?: boolean
   children?: React.ReactNode
+  onClick?: () => void
 }
 const UserBox: React.FC<UserBoxProps> = ({
   name,
@@ -14,9 +17,11 @@ const UserBox: React.FC<UserBoxProps> = ({
   isProfile = false,
   image,
   children,
+  onClick,
 }) => {
   return (
     <div
+      onClick={onClick}
       className={clsx(
         `pt-auto
         hover:bg-gray-700 
@@ -24,7 +29,8 @@ const UserBox: React.FC<UserBoxProps> = ({
         items-center 
         justify-between 
         p-2
-        mt-auto`,
+        mt-auto 
+        cursor-pointer`,
         isProfile && 'rounded-full',
       )}
     >

@@ -11,6 +11,7 @@ interface InputProps {
   disabled?: boolean
   type?: string
   required?: boolean
+  value?: string | null
 }
 
 const Input: React.FC<InputProps> = ({
@@ -20,14 +21,9 @@ const Input: React.FC<InputProps> = ({
   id,
   register,
   required,
+  value,
 }) => {
   const [onFocus, setOnFocus] = useState(false)
-  const [valueExsit, setValueExsit] = useState(false)
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (valueExsit && e.target.value.length === 0) setValueExsit(false)
-    if (!valueExsit && e.target.value.length > 0) setValueExsit(true)
-  }
 
   return (
     <label
@@ -35,14 +31,13 @@ const Input: React.FC<InputProps> = ({
       htmlFor={id}
       className={clsx(
         `block relative px-2 py-1 rounded-sm min-w-[20rem]`,
-        onFocus ? 'ring-sky-400 ring-2' : 'ring-1 ring-gray-400',
+        onFocus || value ? 'ring-sky-400 ring-2' : 'ring-1 ring-gray-400',
       )}
     >
       <div
         className={clsx(
           'transition relative leading-6 origin-left text-md',
-          onFocus ? 'text-sky-400' : 'text-gray-400',
-          onFocus || valueExsit ? '' : 'translate-y-[50%] scale-110',
+          onFocus || value ? 'text-sky-400' : 'text-gray-400 translate-y-[50%] scale-110',
         )}
       >
         {label}
@@ -64,7 +59,6 @@ const Input: React.FC<InputProps> = ({
         {...register(id, {
           required,
           onBlur: () => setOnFocus(false),
-          onChange: handleChange,
         })}
       />
     </label>

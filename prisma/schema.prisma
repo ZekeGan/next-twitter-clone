@@ -20,11 +20,12 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  userId            String? @default(uuid())
+  userId            String? @unique @default(uuid())
   avatar            String?
   profileBackground String?
   profileMessage    String?
   geolocation       String?
+  website           String?
 
   tweets Tweet[] @relation("UserPosts")
 
@@ -39,8 +40,12 @@ model User {
   following    User[]   @relation("Follow", fields: [followingIds], references: [id])
   followingIds String[] @db.ObjectId
 
-  notifications Notification[]
-  accounts      Account[]
+  notificationsAuthor Notification[] @relation("author")
+
+  notifications   Notification[] @relation("notices", fields: [notificationsId], references: [id])
+  notificationsId String[]       @db.ObjectId
+
+  accounts Account[]
 
   @@map("user")
 }
@@ -86,13 +91,22 @@ model Tweet {
   @@map("tweet")
 }
 
-model Notification {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  content   String
-  createdAt DateTime @default(now())
+enum NotificationType {
+  NEW_TWEET
+  BE_FOLLOWED
+}
 
-  from   User   @relation(fields: [fromId], references: [id])
+model Notification {
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  createdAt DateTime         @default(now())
+  type      NotificationType
+
+  from   User   @relation("author", fields: [fromId], references: [id])
   fromId String @db.ObjectId
+
+  to    User[]   @relation("notices", fields: [toIds], references: [id])
+  toIds String[] @db.ObjectId
 
   @@map("notification")
 }

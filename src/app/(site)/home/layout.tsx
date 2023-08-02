@@ -4,16 +4,19 @@ import RightSideBar from '@/components/layout/RightSideBar'
 import Content from '@/components/layout/Content'
 import TweetInput from './_component/TweetInput'
 import HomeTabs from './_component/HomeTabs'
-import Modal from '@/components/modal/Modal'
+import getCurrentUser from '@/actions/getCurrentUser'
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
+  const currentUser = await getCurrentUser()
+
+  if (!currentUser) return <div className='text-white'>找不到使用者</div>
+
   return (
     <>
-      <div className='flex'>
+      <div className='grid grid-cols-[6rem_40rem_auto] lg:grid-cols-[23rem_40rem_auto]'>
         <LeftSideBar />
-        <Content pageText='主頁'>
-          <HomeTabs />
-          <TweetInput />
+        <Content pageText='主頁' subChildren={<HomeTabs />}>
+          <TweetInput data={currentUser} />
           {children}
         </Content>
         <RightSideBar />

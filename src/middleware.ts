@@ -7,5 +7,5 @@ export default withAuth({
 })
 
 export const config = {
-  matcher: ['/home/:path*', '/user/:path*'],
+  matcher: ['/home/:path*', '/user/:path*', '/notification/:path*'],
 }
