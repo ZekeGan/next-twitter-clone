@@ -22,7 +22,7 @@ const UserFollowing = async ({
 
     throw new Error('找不到資料')
   } catch (err: any) {
-    console.log(err)
+    console.error(err)
     return <div className='text-white'>頁面顯示錯誤</div>
   }
 }

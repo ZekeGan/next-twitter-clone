@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
   try {
-    console.log('good')
     const body = await req.json()
     if (!body.tweetId) {
       return new NextResponse('不能提交空白內容', { status: 401 })

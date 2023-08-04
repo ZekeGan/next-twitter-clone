@@ -29,7 +29,6 @@ const LeftUserBoxModal: React.FC<LeftUserBoxModalProps> = ({
   })
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data)
     setIsLoading(true)
     axios
       .post('/api/updateUserId', { ...data })

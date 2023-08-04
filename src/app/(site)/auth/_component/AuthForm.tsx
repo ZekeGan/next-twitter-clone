@@ -44,8 +44,8 @@ const AuthForm = () => {
           router.push('/')
         })
         .catch((err) => {
-          console.log(err)
           TError('電子郵件已有人使用')
+          console.error(err)
         })
         .finally(() => setIsLoading(false))
     }

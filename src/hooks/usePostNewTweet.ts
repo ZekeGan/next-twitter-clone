@@ -20,7 +20,6 @@ const usePostNewTweet = (callback?: () => void) => {
     axios
       .post('/api/postTweet', data)
       .then((tweet) => {
-        console.log(tweet)
         newPostNotification(tweet.data)
         router.refresh()
         reset({ textarea: '' })
