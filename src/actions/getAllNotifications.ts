@@ -6,13 +6,23 @@ const getAllNotifications = async () => {
     const currentUser = await getCurrentUser()
     if (!currentUser) return []
 
-    const allNotifications = await prisma.user.findUnique({
+    const allUserNotifications = await prisma.user.findUnique({
       where: { id: currentUser.id },
       select: { notifications: true },
     })
-    if (!allNotifications) return []
+    if (!allUserNotifications) return []
 
-    return allNotifications.notifications
+    const allNotifications = await Promise.all(
+      allUserNotifications.notifications.map(async (item) => {
+        const singleNotification = await prisma.notification.findUnique({
+          where: { id: item.id },
+          include: { from: true, content: true },
+        })
+        return singleNotification
+      }),
+    )
+
+    return allNotifications.filter((item) => item !== null)
   } catch (err: any) {
     return []
   }

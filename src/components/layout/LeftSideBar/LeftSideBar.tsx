@@ -1,12 +1,16 @@
 import React from 'react'
 import NavList from './NavList'
 import getCurrentUser from '@/actions/getCurrentUser'
-import LeftSideBarBox from './LeftSideBarBox'
+import LeftUserBox from './LeftUserBox'
+import getAllNotifications from '@/actions/getAllNotifications'
 
 const LeftSideBar = async () => {
   const currentUser = await getCurrentUser()
+  const notifications = await getAllNotifications()
 
-  if (!currentUser) return <div className='text-white'>Error 404</div>
+  const seenNum = notifications.filter((item) => item?.seen === false).length
+
+  if (!currentUser || !notifications) return <div className='text-white'>Error 404</div>
 
   return (
     <div
@@ -26,8 +30,8 @@ const LeftSideBar = async () => {
     >
       <div className='flex justify-end lg:items-center lg:w-[15rem]'>
         <div className='flex justify-between flex-col h-full lg:w-full'>
-          <NavList currentUser={currentUser!} />
-          <LeftSideBarBox currentUser={currentUser} />
+          <NavList currentUser={currentUser!} seenNum={seenNum} />
+          <LeftUserBox currentUser={currentUser} />
         </div>
       </div>
     </div>

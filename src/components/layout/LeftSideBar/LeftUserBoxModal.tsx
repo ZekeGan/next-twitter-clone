@@ -1,39 +1,35 @@
 'use client'
-
-import { IoClose } from 'react-icons/io5'
-import Button from '../input/Button'
-import Modal from '../modal/Modal'
-import Input from '../input/Input'
-import { FieldValues, useForm } from 'react-hook-form'
-import axios from 'axios'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { toast } from 'react-toastify'
-import Loading from '../loading/Loading'
+import axios from 'axios'
+import { FieldValues, useForm } from 'react-hook-form'
+import { IoClose } from 'react-icons/io5'
+import { useRouter } from 'next/navigation'
 
-interface UserBoxModalProps {
+import Button from '@/components/input/Button'
+import Modal from '@/components/modal/Modal'
+import Input from '@/components/input/Input'
+import Loading from '@/components/loading/Loading'
+import TError from '@/components/toast/TError'
+
+interface LeftUserBoxModalProps {
   isOpenModal: boolean
   onClose: () => void
   userId: string
 }
 
-const LeftSideBarModal: React.FC<UserBoxModalProps> = ({
+const LeftUserBoxModal: React.FC<LeftUserBoxModalProps> = ({
   isOpenModal,
   onClose,
   userId,
 }) => {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-  const {
-    register,
-    watch,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FieldValues>({ defaultValues: { userId: userId } })
+  const { register, watch, handleSubmit } = useForm<FieldValues>({
+    defaultValues: { userId: userId },
+  })
 
   const onSubmit = (data: FieldValues) => {
     console.log(data)
-
     setIsLoading(true)
     axios
       .post('/api/updateUserId', { ...data })
@@ -41,7 +37,10 @@ const LeftSideBarModal: React.FC<UserBoxModalProps> = ({
         router.refresh()
         onClose()
       })
-      .catch((err) => toast.error(err))
+      .catch((err) => {
+        TError('哪裡發生錯誤，請再試一次')
+        console.error(err)
+      })
       .finally(() => setIsLoading(false))
   }
 
@@ -80,4 +79,4 @@ const LeftSideBarModal: React.FC<UserBoxModalProps> = ({
   )
 }
 
-export default LeftSideBarModal
+export default LeftUserBoxModal

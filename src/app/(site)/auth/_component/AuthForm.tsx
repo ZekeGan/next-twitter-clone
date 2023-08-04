@@ -3,13 +3,14 @@ import React, { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
-import { useSession, signIn } from 'next-auth/react'
+import { useSession, signIn, SignInResponse } from 'next-auth/react'
 import { BsGoogle, BsGithub } from 'react-icons/bs'
-import { toast } from 'react-toastify'
 import Input from '@/components/input/Input'
 import Button from '@/components/input/Button'
 import SocialAuthButton from './SocialAuthButton'
 import Loading from '@/components/loading/Loading'
+import TError from '@/components/toast/TError'
+import TSuccess from '@/components/toast/TSuccess'
 
 type Varient = 'Login' | 'Register'
 
@@ -18,7 +19,7 @@ const AuthForm = () => {
   const session = useSession()
   const [varient, setVarient] = useState<Varient>('Login')
   const [isLoading, setIsLoading] = useState(false)
-  const { register, handleSubmit } = useForm<FieldValues>({
+  const { register, handleSubmit, watch } = useForm<FieldValues>({
     defaultValues: { email: '', password: '', name: '' },
   })
 
@@ -39,64 +40,37 @@ const AuthForm = () => {
       axios
         .post('/api/register', data)
         .then(() => {
-          toast.success('歡迎加入推特', {
-            position: 'top-center',
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-          })
+          TSuccess('歡迎加入推特')
           router.push('/')
         })
         .catch((err) => {
           console.log(err)
-          toast.error('電子郵件已有人使用', {
-            position: 'top-center',
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-          })
+          TError('電子郵件已有人使用')
         })
         .finally(() => setIsLoading(false))
     }
 
     if (varient === 'Login') {
-      signIn('credentials', {
-        ...data,
-        redirect: false,
-      })
-        .then((callback) => {
-          if (!callback?.url && callback?.error) {
-            toast.error(callback.error, { theme: 'colored' })
-          }
-          if (callback?.url && !callback?.error) {
-            toast.success('歡迎回來推特', { theme: 'colored' })
-            router.push('/home/recommend')
-          }
-        })
+      signIn('credentials', { ...data, redirect: false })
+        .then((callback) => loginSuccess(callback!))
         .finally(() => setIsLoading(false))
     }
   }
   const handleSocialAuth = (action: string) => {
     setIsLoading(true)
     signIn(action, { redirect: false })
-      .then((callback) => {
-        if (!callback?.url && callback?.error) {
-          toast.error(callback.error, { theme: 'colored' })
-        }
-        if (callback?.url && !callback?.error) {
-          toast.success('歡迎回來推特', { theme: 'colored' })
-          router.push('/home')
-        }
-      })
+      .then((callback) => loginSuccess(callback!))
       .finally(() => setIsLoading(false))
+  }
+
+  const loginSuccess = (callback: SignInResponse) => {
+    if (!callback?.url && callback?.error) {
+      TError(callback.error)
+    }
+    if (callback?.url && !callback?.error) {
+      TSuccess('歡迎回來推特')
+      router.push('/home')
+    }
   }
 
   return (
@@ -139,14 +113,22 @@ const AuthForm = () => {
               <Input
                 id='name'
                 label='使用者名稱'
+                value={watch('name')}
                 register={register}
                 disabled={isLoading}
               />
             )}
-            <Input id='email' label='電子郵件' register={register} disabled={isLoading} />
+            <Input
+              id='email'
+              label='電子郵件'
+              value={watch('email')}
+              register={register}
+              disabled={isLoading}
+            />
             <Input
               id='password'
               label='密碼'
+              value={watch('password')}
               type='password'
               register={register}
               disabled={isLoading}

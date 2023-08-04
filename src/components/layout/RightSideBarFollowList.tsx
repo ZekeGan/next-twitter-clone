@@ -4,28 +4,16 @@ import { User } from '@prisma/client'
 import UserBox from './UserBox'
 import Button from '../input/Button'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import axios from 'axios'
-import { toast } from 'react-toastify'
 import Loading from '../loading/Loading'
+import useFollowUser from '@/hooks/useFollowUser'
 
 interface RightSideBarFollowListProps {
   users: User[]
 }
 const RightSideBarFollowList: React.FC<RightSideBarFollowListProps> = ({ users }) => {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const { isLoading, handleFollow } = useFollowUser()
 
-  const handleFollow = (id: string) => {
-    setIsLoading(true)
-    axios
-      .post('/api/following/follow', { targetUserId: id })
-      .then(() => {
-        router.refresh()
-      })
-      .catch((err) => toast.error(err))
-      .finally(() => setIsLoading(false))
-  }
   return (
     <>
       <Loading isLoading={isLoading} />

@@ -88,6 +88,8 @@ model Tweet {
   responseFrom Tweet?  @relation("Comments", fields: [responseId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   responseId   String? @db.ObjectId
 
+  notification Notification?
+
   @@map("tweet")
 }
 
@@ -98,9 +100,12 @@ enum NotificationType {
 
 model Notification {
   id        String           @id @default(auto()) @map("_id") @db.ObjectId
-  content   String
   createdAt DateTime         @default(now())
   type      NotificationType
+  seen      Boolean          @default(false)
+
+  content   Tweet?  @relation(fields: [contentId], references: [id])
+  contentId String? @unique @db.ObjectId
 
   from   User   @relation("author", fields: [fromId], references: [id])
   fromId String @db.ObjectId

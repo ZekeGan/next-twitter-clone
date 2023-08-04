@@ -1,19 +1,20 @@
 'use client'
 
 import React, { useState } from 'react'
-import LeftSideBarModal from './LeftSideBarModal'
-import UserBox from './UserBox'
+import LeftUserBoxModal from './LeftUserBoxModal'
+import UserBox from '../UserBox'
 import { User } from '@prisma/client'
+import { FiMoreHorizontal } from 'react-icons/fi'
 
 interface LeftSideBarBoxProps {
   currentUser: User
 }
 
-const LeftSideBarBox: React.FC<LeftSideBarBoxProps> = ({ currentUser }) => {
+const LeftUserBox: React.FC<LeftSideBarBoxProps> = ({ currentUser }) => {
   const [isOpenModal, setIsOpenModal] = useState(false)
   return (
     <>
-      <LeftSideBarModal
+      <LeftUserBoxModal
         isOpenModal={isOpenModal}
         onClose={() => setIsOpenModal(false)}
         userId={currentUser.userId!}
@@ -24,9 +25,11 @@ const LeftSideBarBox: React.FC<LeftSideBarBoxProps> = ({ currentUser }) => {
         isProfile
         name={currentUser.name!}
         image={currentUser.image!}
-      />
+      >
+        <FiMoreHorizontal size={20} className='text-white hidden lg:block' />
+      </UserBox>
     </>
   )
 }
 
-export default LeftSideBarBox
+export default LeftUserBox

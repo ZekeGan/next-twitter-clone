@@ -1,5 +1,6 @@
 import prisma from '@/libs/prismadb'
 import getCurrentUser from './getCurrentUser'
+import getFollowers from './getFollowers'
 
 export default async function getHomeFollowingTweets() {
   try {

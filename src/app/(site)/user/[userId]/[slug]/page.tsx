@@ -1,14 +1,14 @@
-import getCurrentUser from '@/actions/getCurrentUser'
-import { getUserAllTweets } from '@/actions/getUserAllTweets'
-import { getUserRepliedTweets } from '@/actions/getUserRepliedTweets'
-import TweetBox from '@/components/layout/TweetBox/TweetBox'
-import UserInfo from './_component/UserInfo'
-import UserTabs from './_component/UserTabs'
-import getAnotherUser from '@/actions/getAnotherUser'
 import { User } from '@prisma/client'
-import Content from '@/components/layout/Content'
+import { getUserRepliedTweets } from '@/actions/getUserRepliedTweets'
+import getCurrentUser from '@/actions/getCurrentUser'
+import getAnotherUser from '@/actions/getAnotherUser'
+import { getUserAllTweets } from '@/actions/getUserAllTweets'
 import { getUserLikeTweets } from '@/actions/getUserLikeTweets'
 import TweetResponse from '@/components/layout/TweetBox/TweetResponse'
+import TweetBox from '@/components/layout/TweetBox/TweetBox'
+import Content from '@/components/layout/Content'
+import UserInfo from './_component/UserInfo'
+import UserTabs from './_component/UserTabs'
 
 const UserContent = async ({
   params: { userId, slug },

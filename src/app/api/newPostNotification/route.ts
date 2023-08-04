@@ -5,15 +5,14 @@ import getCurrentUser from '@/actions/getCurrentUser'
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    console.log(body)
-    if (!body.textarea) return new NextResponse('內容不得為空', { status: 401 })
+    if (!body.tweetId) return new NextResponse('內容不得為空', { status: 401 })
 
     const currentUser = await getCurrentUser()
     if (!currentUser) return new NextResponse('使用者未登入', { status: 401 })
 
     const notification = await prisma.notification.create({
       data: {
-        content: body.textarea,
+        content: { connect: { id: body.tweetId } },
         type: 'NEW_TWEET',
         from: { connect: { id: currentUser.id } },
       },

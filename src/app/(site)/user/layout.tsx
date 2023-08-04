@@ -1,5 +1,5 @@
 import React from 'react'
-import LeftSideBar from '@/components/layout/LeftSideBar'
+import LeftSideBar from '@/components/layout/LeftSideBar/LeftSideBar'
 import RightSideBar from '@/components/layout/RightSideBar'
 
 const layout = ({ children }: { children: React.ReactNode }) => {

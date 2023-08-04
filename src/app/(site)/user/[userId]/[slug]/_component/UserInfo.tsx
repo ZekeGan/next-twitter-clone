@@ -1,18 +1,19 @@
 'use client'
-
 import React, { useMemo, useState } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { IoLocationOutline, IoCalendarOutline, IoLink } from 'react-icons/io5'
+import { format } from 'date-fns'
+import axios from 'axios'
+
+import { User } from '@prisma/client'
+import SettingModal from './SettingModal'
+import useFollowUser from '@/hooks/useFollowUser'
 import Avatar from '@/components/Avatar'
 import Button from '@/components/input/Button'
-import { IoLocationOutline, IoCalendarOutline, IoLink } from 'react-icons/io5'
-import { User } from '@prisma/client'
-import { format } from 'date-fns'
-import SettingModal from './SettingModal'
-import Link from 'next/link'
-import axios from 'axios'
-import { toast } from 'react-toastify'
 import Loading from '@/components/loading/Loading'
-import { useRouter } from 'next/navigation'
+import TError from '@/components/toast/TError'
+import TSuccess from '@/components/toast/TSuccess'
 
 interface UserInfoProps {
   data: User & {
@@ -26,34 +27,25 @@ interface UserInfoProps {
 const UserInfo: React.FC<UserInfoProps> = ({ data, isCurrentUser, currentUser }) => {
   const router = useRouter()
   const [isOpenModal, setIsOpenModal] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-
-  console.log(data.followBy)
+  const { handleFollow, setIsLoading, isLoading } = useFollowUser()
 
   const isFollowing = useMemo(
     () => data.followBy.some((user) => user.id === currentUser.id),
     [currentUser, data],
   )
 
-  const handleFollow = () => {
-    setIsLoading(true)
-    axios
-      .post('/api/following/follow', { targetUserId: data.id })
-      .then(() => {
-        router.refresh()
-      })
-      .catch((err) => toast.error(err))
-      .finally(() => setIsLoading(false))
-  }
-
   const handleUnfollow = () => {
     setIsLoading(true)
     axios
       .put('/api/following/unfollow', { targetUserId: data.id })
       .then(() => {
+        TSuccess(`已退 ${data.name} 追蹤`)
         router.refresh()
       })
-      .catch((err) => toast.error(err))
+      .catch((err) => {
+        TError('哪裡發生錯誤了，請再試一次')
+        console.error(err)
+      })
       .finally(() => setIsLoading(false))
   }
 
@@ -96,7 +88,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ data, isCurrentUser, currentUser })
                     <span className='px-2'>跟隨中</span>
                   </Button>
                 ) : (
-                  <Button onClick={handleFollow}>
+                  <Button onClick={() => handleFollow(data.id)}>
                     <span className='px-2'>跟隨</span>
                   </Button>
                 )}
@@ -123,12 +115,9 @@ const UserInfo: React.FC<UserInfoProps> = ({ data, isCurrentUser, currentUser })
             {data.website && (
               <div className='flex space-x-1'>
                 <IoLink size={20} className='text-gray-500' />
-                <Link
-                  href={data.website}
-                  className='text-sky-500 text-sm hover:underline'
-                >
+                <a href={data.website} className='text-sky-500 text-sm hover:underline'>
                   {data.website}
-                </Link>
+                </a>
               </div>
             )}
 
@@ -141,16 +130,22 @@ const UserInfo: React.FC<UserInfoProps> = ({ data, isCurrentUser, currentUser })
           </div>
 
           <div className='flex space-x-3'>
-            <div className='space-x-1'>
+            <a
+              href={`/user/${data.userId}/follow/following`}
+              className='space-x-1 border-b-[1px] border-transparent hover:border-gray-400'
+            >
               <span className='text-white font-bold text-sm'>
                 {data.following.length}
               </span>
               <span className='text-gray-500 text-sm'>個跟隨中</span>
-            </div>
-            <div className='space-x-1'>
+            </a>
+            <a
+              href={`/user/${data.userId}/follow/followers`}
+              className='space-x-1 border-b-[1px] border-transparent hover:border-gray-400'
+            >
               <span className='text-white font-bold text-sm'>{data.followBy.length}</span>
               <span className='text-gray-500 text-sm'>位跟隨者</span>
-            </div>
+            </a>
           </div>
         </div>
       </div>

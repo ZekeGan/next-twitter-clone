@@ -1,9 +1,7 @@
 'use client'
-import React, { useMemo } from 'react'
+import React from 'react'
 import clsx from 'clsx'
 import Link from 'next/link'
-import useHomeTabsRoutes from '@/hooks/useHomeTabsRoutes'
-
 interface TabsProps {
   routes: {
     label: string

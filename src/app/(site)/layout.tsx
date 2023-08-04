@@ -2,6 +2,7 @@ import '@/styles/globals.css'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+
 import ToastContext from '@/context/ToastContext'
 import AuthContext from '@/context/AuthContext'
 

@@ -1,10 +1,11 @@
 import React from 'react'
-import LeftSideBar from '@/components/layout/LeftSideBar'
+
+import LeftSideBar from '@/components/layout/LeftSideBar/LeftSideBar'
 import RightSideBar from '@/components/layout/RightSideBar'
 import Content from '@/components/layout/Content'
+import getCurrentUser from '@/actions/getCurrentUser'
 import TweetInput from './_component/TweetInput'
 import HomeTabs from './_component/HomeTabs'
-import getCurrentUser from '@/actions/getCurrentUser'
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
   const currentUser = await getCurrentUser()

@@ -7,7 +7,7 @@ const Notification = async () => {
 
   if (!notifications) return <div className='text-white'>未找到通知</div>
 
-  return notifications.map((item) => <NotificationBox data={item} />)
+  return notifications.map((item) => <NotificationBox key={item?.id} data={item!} />)
 }
 
 export default Notification

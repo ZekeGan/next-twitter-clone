@@ -9,6 +9,7 @@ interface ContentProps {
   subChildren?: React.ReactNode
   pageText: string
   backUrl?: string
+  borderUnderline?: boolean
 }
 
 const Content: React.FC<ContentProps> = ({
@@ -16,6 +17,7 @@ const Content: React.FC<ContentProps> = ({
   subChildren,
   pageText,
   backUrl,
+  borderUnderline,
 }) => {
   const router = useRouter()
 
@@ -33,7 +35,8 @@ const Content: React.FC<ContentProps> = ({
     >
       <div className='w-full row-start-1 '>
         <div
-          className=' 
+          className={clsx(
+            ` 
             fixed 
             flex 
             flex-col 
@@ -44,7 +47,9 @@ const Content: React.FC<ContentProps> = ({
             bg-opacity-50 
             border-r-[1px] 
             border-gray-600 
-            z-10'
+            z-10`,
+            borderUnderline && 'border-b-[1px] border-gray-500',
+          )}
         >
           <div className='flex items-center mb-3 px-3 py-2 space-x-2'>
             {!!backUrl && (

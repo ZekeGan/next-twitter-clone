@@ -1,7 +1,8 @@
 'use client'
+import React from 'react'
+
 import Tabs from '@/components/Tabs'
 import useUserTabsRoutes from '@/hooks/useUserTabsRoutes'
-import React from 'react'
 
 const UserTabs = ({ userId }: { userId: string | null }) => {
   const routes = useUserTabsRoutes(userId)

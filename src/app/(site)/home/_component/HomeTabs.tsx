@@ -1,7 +1,8 @@
 'use client'
+import React from 'react'
+
 import Tabs from '@/components/Tabs'
 import useHomeTabsRoutes from '@/hooks/useHomeTabsRoutes'
-import React from 'react'
 
 const HomeTabs = () => {
   const routes = useHomeTabsRoutes()

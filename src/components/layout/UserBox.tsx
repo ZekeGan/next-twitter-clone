@@ -2,7 +2,7 @@
 import Avatar from '@/components/Avatar'
 import clsx from 'clsx'
 import React, { useState } from 'react'
-import UserBoxModal from './LeftSideBarModal'
+import UserBoxModal from './LeftSideBar/LeftUserBoxModal'
 interface UserBoxProps {
   name: string
   userId: string
@@ -25,6 +25,7 @@ const UserBox: React.FC<UserBoxProps> = ({
       className={clsx(
         `pt-auto
         hover:bg-gray-700 
+        transition
         flex 
         items-center 
         justify-between 

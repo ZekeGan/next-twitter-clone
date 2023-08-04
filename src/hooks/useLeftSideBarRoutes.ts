@@ -11,7 +11,7 @@ import {
 } from 'react-icons/bi'
 import { BsTwitter } from 'react-icons/bs'
 
-const useRoutes = (userId: string) => {
+const useLeftSideBarRoutes = (userId: string, newNotification?: number) => {
   const pathname = usePathname().split('/')[1]
 
   const routes = useMemo(
@@ -36,6 +36,7 @@ const useRoutes = (userId: string) => {
         icon: BiSolidBell,
         active: pathname === 'notification',
         showLabel: true,
+        informNum: newNotification,
       },
       {
         label: '個人資料',
@@ -58,4 +59,4 @@ const useRoutes = (userId: string) => {
   return routes
 }
 
-export default useRoutes
+export default useLeftSideBarRoutes

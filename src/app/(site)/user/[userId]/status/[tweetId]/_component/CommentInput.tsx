@@ -1,15 +1,17 @@
 'use client'
 import React, { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import axios from 'axios'
+
+import { Tweet, User } from '@prisma/client'
+import useUserSession from '@/hooks/useUserSession'
 import Avatar from '@/components/Avatar'
 import Button from '@/components/input/Button'
 import Textarea from '@/components/input/Textarea'
-import { Tweet, User } from '@prisma/client'
-import useUserSession from '@/hooks/useUserSession'
-import Link from 'next/link'
-import axios from 'axios'
-import { useRouter } from 'next/navigation'
 import Loading from '@/components/loading/Loading'
+import TError from '@/components/toast/TError'
 
 interface CommentInputProps {
   tweet: Tweet & {
@@ -33,6 +35,10 @@ const CommentInput: React.FC<CommentInputProps> = ({ tweet }) => {
       .then(() => {
         reset({ comment: '' })
         router.refresh()
+      })
+      .catch((err) => {
+        TError('哪裡發生錯誤，請再試一次')
+        console.error(err)
       })
       .finally(() => setIsLoading(false))
   }

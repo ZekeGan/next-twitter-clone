@@ -1,20 +1,22 @@
 'use client'
 
+import axios from 'axios'
+import Image from 'next/image'
+import { useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
+import { IoClose, IoCameraOutline } from 'react-icons/io5'
+import { CldUploadButton } from 'next-cloudinary'
+import { useRouter } from 'next/navigation'
+
+import { User } from '@prisma/client'
+import Loading from '@/components/loading/Loading'
+import TError from '@/components/toast/TError'
 import Avatar from '@/components/Avatar'
 import Button from '@/components/input/Button'
 import Input from '@/components/input/Input'
 import Textarea from '@/components/input/Textarea'
 import Modal from '@/components/modal/Modal'
-import { User } from '@prisma/client'
-import axios from 'axios'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
-import { IoClose, IoCameraOutline } from 'react-icons/io5'
-import { toast } from 'react-toastify'
-import { CldUploadButton } from 'next-cloudinary'
-import { useRouter } from 'next/navigation'
-import Loading from '@/components/loading/Loading'
+import TSuccess from '@/components/toast/TSuccess'
 
 interface SettingModalProps {
   onClose: () => void
@@ -46,10 +48,14 @@ const SettingModal: React.FC<SettingModalProps> = ({ onClose, isOpen, data }) =>
         image: newImageUrl,
       })
       .then(() => {
+        TSuccess('成功更改個人資料')
         router.refresh()
         onClose()
       })
-      .catch((err) => toast.error(err))
+      .catch((err) => {
+        TError('哪裡發生錯誤了，請再試一次')
+        console.error(err)
+      })
       .finally(() => setIsLoading(false))
   }
 

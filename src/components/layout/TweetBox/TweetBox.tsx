@@ -1,16 +1,17 @@
 'use client'
 import React, { useState } from 'react'
-import axios from 'axios'
-import { LuHeart } from 'react-icons/lu'
-import { FaRegComment, FaRetweet } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
-import { toast } from 'react-toastify'
+import axios from 'axios'
+import Link from 'next/link'
+import { FaRegComment, FaRetweet } from 'react-icons/fa'
+import { LuHeart } from 'react-icons/lu'
 
 import { Tweet, User } from '@prisma/client'
-import Avatar from '@/components/Avatar'
-import ActionButton from '@/components/layout/TweetBox/ActionButton'
 import AuthorInfo from './AuthorInfo'
+import ActionButton from '@/components/layout/TweetBox/ActionButton'
+import Avatar from '@/components/Avatar'
 import Loading from '@/components/loading/Loading'
+import TError from '@/components/toast/TError'
 
 interface TweetBoxProps {
   data: Tweet & {
@@ -33,27 +34,15 @@ const TweetBox: React.FC<TweetBoxProps> = ({ data, currentUser, children }) => {
     like: data.likeFrom.some((user) => user.id === currentUser.id),
   }
 
-  const handleLikeButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleButton = (e: React.MouseEvent<HTMLButtonElement>, href: string) => {
     e.stopPropagation()
     setIsLoading(true)
     axios
-      .post('/api/likeTweet', { tweetId: data.id })
-      .then((res) => {
-        console.log(res)
+      .post(href, { tweetId: data.id })
+      .then(() => {
+        router.refresh()
       })
-      .catch((err) => toast.error(err))
-      .finally(() => setIsLoading(false))
-  }
-
-  const handleRetweetButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    setIsLoading(true)
-    axios
-      .post('/api/retweetTweet', { tweetId: data.id })
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => toast.error(err))
+      .catch((err) => TError(err))
       .finally(() => setIsLoading(false))
   }
 
@@ -73,7 +62,12 @@ const TweetBox: React.FC<TweetBoxProps> = ({ data, currentUser, children }) => {
         cursor-pointer'
       >
         <article className='flex space-x-3'>
-          <Avatar image={data?.author?.image} />
+          <Link
+            href={`/user/${data.author.userId}/tweet`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Avatar image={data?.author?.image} />
+          </Link>
           <div className='w-full'>
             <AuthorInfo author={data.author} tweetCreatedAt={data.createdAt} />
             <p className='text-white mb-2'>{data.content}</p>
@@ -92,14 +86,14 @@ const TweetBox: React.FC<TweetBoxProps> = ({ data, currentUser, children }) => {
                 type='green'
                 icon={FaRetweet}
                 num={data.retweetFrom.length}
-                onClick={(e) => handleRetweetButton(e)}
+                onClick={(e) => handleButton(e, '/api/retweetTweet')}
                 isCurrentUserActive={isUserActiveSocialButton.retweet}
               />
               <ActionButton
                 type='red'
                 icon={LuHeart}
                 num={data.likeFromIds.length}
-                onClick={(e) => handleLikeButton(e)}
+                onClick={(e) => handleButton(e, '/api/likeTweet')}
                 isCurrentUserActive={isUserActiveSocialButton.like}
               />
               <div />

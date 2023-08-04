@@ -1,6 +1,7 @@
 'use client'
 import useDifferenceInDate from '@/hooks/useDifferenceInDate'
 import { User } from '@prisma/client'
+import Link from 'next/link'
 
 interface AuthorInfoProps {
   author: User
@@ -13,7 +14,13 @@ const AuthorInfo: React.FC<AuthorInfoProps> = ({ author, tweetCreatedAt, childre
   return (
     <div className='flex space-x-2 items-center'>
       {children}
-      <span className='font-semibold text-white'>{author.name}</span>
+      <Link
+        onClick={(e) => e.stopPropagation()}
+        href={`/user/${author.userId}/tweet`}
+        className='font-semibold text-white hover:underline'
+      >
+        <span>{author.name}</span>
+      </Link>
       <span className=' text-gray-500'>
         <span>@{author.userId}</span>
         <time> · {differenceInTime}</time>
