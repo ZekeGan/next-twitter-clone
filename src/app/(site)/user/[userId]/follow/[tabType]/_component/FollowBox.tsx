@@ -14,7 +14,7 @@ const FollowBox = ({ data }: { data: User }) => {
       <Avatar image={data.image} />
       <div>
         <div className='text-white'>{data.name}</div>
-        <div className='text-gray-600'>@{data.userId}</div>
+        <div className='text-gray-600 text-sm'>@{data.userId}</div>
         {data.profileMessage && <div className='text-white'>{data.profileMessage}</div>}
       </div>
     </div>

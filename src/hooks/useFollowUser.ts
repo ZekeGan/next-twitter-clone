@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import TError from '@/components/toast/TError'
+import TSuccess from '@/components/toast/TSuccess'
 
 const useFollowUser = () => {
   const router = useRouter()
@@ -14,6 +15,7 @@ const useFollowUser = () => {
       .post('/api/following/follow', { targetUserId: id })
       .then(() => {
         axios.post('/api/following/followNotification', { id: id })
+        TSuccess('已成功追蹤')
         router.refresh()
       })
       .catch((err) => {

@@ -8,7 +8,7 @@ const getAllNotifications = async () => {
 
     const allUserNotifications = await prisma.user.findUnique({
       where: { id: currentUser.id },
-      select: { notifications: true },
+      select: { notifications: { orderBy: { createdAt: 'desc' } } },
     })
     if (!allUserNotifications) return []
 

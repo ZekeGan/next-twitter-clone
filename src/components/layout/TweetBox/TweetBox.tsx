@@ -12,6 +12,7 @@ import ActionButton from '@/components/layout/TweetBox/ActionButton'
 import Avatar from '@/components/Avatar'
 import Loading from '@/components/loading/Loading'
 import TError from '@/components/toast/TError'
+import TweetCommentModal from './TweetCommentModal'
 
 interface TweetBoxProps {
   data: Tweet & {
@@ -25,6 +26,7 @@ interface TweetBoxProps {
 }
 
 const TweetBox: React.FC<TweetBoxProps> = ({ data, currentUser, children }) => {
+  const [isOpenModal, setIsOpenModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
@@ -48,12 +50,21 @@ const TweetBox: React.FC<TweetBoxProps> = ({ data, currentUser, children }) => {
 
   return (
     <>
+      <TweetCommentModal
+        isOpen={isOpenModal}
+        onClose={() => setIsOpenModal(false)}
+        data={data}
+        user={data.author}
+        currentUser={currentUser}
+      />
       <Loading isLoading={isLoading} />
       <div
         onClick={() => router.push(`/user/${data.author.userId}/status/${data.id}`)}
         className='
-        px-3 
-        py-2 
+        grid 
+        grid-cols-[3rem_auto]
+        p-3
+        w-[40rem]
         border-b-[1px] 
         border-gray-600 
         hover:bg-white 
@@ -61,16 +72,16 @@ const TweetBox: React.FC<TweetBoxProps> = ({ data, currentUser, children }) => {
         transition 
         cursor-pointer'
       >
-        <article className='flex space-x-3'>
-          <Link
-            href={`/user/${data.author.userId}/tweet`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Avatar image={data?.author?.image} />
-          </Link>
-          <div className='w-full'>
-            <AuthorInfo author={data.author} tweetCreatedAt={data.createdAt} />
-            <p className='text-white mb-2'>{data.content}</p>
+        <Link
+          href={`/user/${data.author.userId}/tweet`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Avatar image={data?.author?.image} />
+        </Link>
+        <article>
+          <div className='flex flex-col'>
+            <AuthorInfo author={data.author} tweetCreatedAt={data.createdAt} isUserId />
+            <p className='text-white mb-2 overflow-hidden'>{data.content}</p>
 
             {children}
 
@@ -79,16 +90,13 @@ const TweetBox: React.FC<TweetBoxProps> = ({ data, currentUser, children }) => {
                 type='blue'
                 icon={FaRegComment}
                 num={data.comments.length}
-                onClick={() => {}}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsOpenModal(true)
+                }}
                 isCurrentUserActive={isUserActiveSocialButton.comment}
               />
-              <ActionButton
-                type='green'
-                icon={FaRetweet}
-                num={data.retweetFrom.length}
-                onClick={(e) => handleButton(e, '/api/retweetTweet')}
-                isCurrentUserActive={isUserActiveSocialButton.retweet}
-              />
+              <div />
               <ActionButton
                 type='red'
                 icon={LuHeart}

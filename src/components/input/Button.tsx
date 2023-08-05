@@ -5,11 +5,12 @@ import React from 'react'
 
 interface ButtonProps {
   type?: 'button' | 'submit'
-  onClick?: () => void
+  onClick?: (e?: React.MouseEvent<HTMLElement>) => void
   children: React.ReactNode
   secondary?: boolean
   disabled?: boolean
   primary?: boolean
+  warning?: boolean
   lg?: boolean
   md?: boolean
 }
@@ -21,6 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   secondary,
   disabled,
   primary,
+  warning,
   lg,
   md,
 }) => {
@@ -45,6 +47,7 @@ const Button: React.FC<ButtonProps> = ({
         primary && ' bg-sky-600 hover:bg-sky-700 text-white',
         secondary &&
           'bg-transparent ring-1 ring-gray-400 text-gray-200 hover:bg-gray-700',
+        warning && 'bg-red-600 hover:bg-red-700 text-white',
       )}
     >
       {children}

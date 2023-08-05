@@ -13,6 +13,7 @@ interface TextareaProps {
   label?: string
   value?: string
   border?: boolean
+  required?: boolean
 }
 
 const Textarea: React.FC<TextareaProps> = ({
@@ -23,6 +24,7 @@ const Textarea: React.FC<TextareaProps> = ({
   label,
   border,
   value = '',
+  required,
 }) => {
   const [innerValue, setValue] = useState(value!)
   const rows = innerValue.split('\n').length
@@ -75,7 +77,7 @@ const Textarea: React.FC<TextareaProps> = ({
         rows={rows}
         onFocus={() => setIsFocus(true)}
         {...register(id, {
-          required: true,
+          required,
           onBlur: () => setIsFocus(false),
           onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
             setValue(e.target.value),

@@ -7,9 +7,15 @@ interface AuthorInfoProps {
   author: User
   tweetCreatedAt: Date
   children?: React.ReactNode
+  isUserId?: boolean
 }
 
-const AuthorInfo: React.FC<AuthorInfoProps> = ({ author, tweetCreatedAt, children }) => {
+const AuthorInfo: React.FC<AuthorInfoProps> = ({
+  author,
+  tweetCreatedAt,
+  children,
+  isUserId,
+}) => {
   const differenceInTime = useDifferenceInDate(tweetCreatedAt)
   return (
     <div className='flex space-x-2 items-center'>
@@ -22,7 +28,7 @@ const AuthorInfo: React.FC<AuthorInfoProps> = ({ author, tweetCreatedAt, childre
         <span>{author.name}</span>
       </Link>
       <span className=' text-gray-500'>
-        <span>@{author.userId}</span>
+        {isUserId && <span>@{author.userId}</span>}
         <time> · {differenceInTime}</time>
       </span>
     </div>

@@ -88,7 +88,7 @@ model Tweet {
   responseFrom Tweet?  @relation("Comments", fields: [responseId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   responseId   String? @db.ObjectId
 
-  notification Notification?
+  notification Notification[]
 
   @@map("tweet")
 }
@@ -105,7 +105,7 @@ model Notification {
   seen      Boolean          @default(false)
 
   content   Tweet?  @relation(fields: [contentId], references: [id])
-  contentId String? @unique @db.ObjectId
+  contentId String? @db.ObjectId
 
   from   User   @relation("author", fields: [fromId], references: [id])
   fromId String @db.ObjectId

@@ -1,12 +1,13 @@
 # Twitter Clone 介紹
 
 # 使用技術
-- Nextjs 13: 框架我選擇 Nextjs，他提供的 SSR 和 SSG 對 SEO 更友好，對頁面載入也快，對用戶的隱私更能起到作用
-- Tailwind: CSS框架方面 我選擇Tailwind，因為它能夠更快速的定義CSS，而且他的高度自訂性讓我更能客製化的創建UI元件
-- Next-auth: 提供了廣泛的第三方登入選項，能夠更快速和簡單的集成
-- Typescript: 讓我在編寫網頁時能夠及時回報錯誤，降低專案上線時的 Bug 機率
-- MongoDB: 資料庫我選擇了 MongoDB，因為它提供了線上的資料庫管理Atlas，和雲端的資料庫儲存服務 
-- Prisma: 資料庫串接方面，Prisma 提供了更簡單的方式讓我管理和操作資料庫
+- Nextjs 13   : 框架我選擇 Nextjs，他提供的 SSR 和 SSG 對 SEO 更友好，對頁面載入也快，對用戶的隱私更能起到作用
+- Tailwind    : CSS框架方面 我選擇Tailwind，因為它能夠更快速的定義CSS，而且他的高度自訂性讓我更能客製化的創建UI元件
+- Next-auth   : 提供了廣泛的第三方登入選項，能夠更快速和簡單的集成
+- Typescript  : 讓我在編寫網頁時能夠及時回報錯誤，降低專案上線時的 Bug 機率
+- MongoDB     : 資料庫我選擇了 MongoDB，因為它提供了線上的資料庫管理Atlas，和雲端的資料庫儲存服務 
+- Prisma      : 資料庫串接方面，Prisma 提供了更簡單的方式讓我管理和操作資料庫
+- cloudinary  :
 
 # 架構設計
 

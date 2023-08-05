@@ -40,7 +40,7 @@ const UserBox: React.FC<UserBoxProps> = ({
         <div className=' hidden lg:block'>
           <div className='text-white font-semibold text-sm'>{name}</div>
           <div className='text-gray-500 font-light text-sm'>
-            @{userId && userId?.length > 10 ? `${userId?.slice(0, 9)}...` : userId}
+            @{userId && userId?.length > 15 ? `${userId?.slice(0, 14)}...` : userId}
           </div>
         </div>
       </div>

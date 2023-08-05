@@ -17,6 +17,8 @@ export async function POST(req: Request) {
       },
     })
 
+    console.log('created notification')
+
     if (!notification) {
       return new NextResponse('通知創建錯誤', { status: 401 })
     }
@@ -25,6 +27,8 @@ export async function POST(req: Request) {
       where: { id: body.id },
       data: { notifications: { connect: { id: notification.id } } },
     })
+
+    console.log('updated user')
 
     return new NextResponse('通知創建成功', { status: 200 })
   } catch (err: any) {

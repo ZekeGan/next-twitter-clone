@@ -1,9 +1,6 @@
 'use client'
-import React, { useState } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
+import React from 'react'
 import Link from 'next/link'
-import axios from 'axios'
 
 import { Tweet, User } from '@prisma/client'
 import useUserSession from '@/hooks/useUserSession'
@@ -11,7 +8,7 @@ import Avatar from '@/components/Avatar'
 import Button from '@/components/input/Button'
 import Textarea from '@/components/input/Textarea'
 import Loading from '@/components/loading/Loading'
-import TError from '@/components/toast/TError'
+import usePostComment from '@/hooks/usePostComment'
 
 interface CommentInputProps {
   tweet: Tweet & {
@@ -21,27 +18,13 @@ interface CommentInputProps {
 }
 
 const CommentInput: React.FC<CommentInputProps> = ({ tweet }) => {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const currentUser = useUserSession()
-  const { register, handleSubmit, reset } = useForm<FieldValues>({
-    defaultValues: { comment: '' },
-  })
+  const {
+    form: { register, formSubmit },
+    isLoading,
+  } = usePostComment(tweet)
 
-  const onSubmit = (data: FieldValues) => {
-    setIsLoading(true)
-    axios
-      .post('/api/postComment', { ...data, responseFrom: tweet.id })
-      .then(() => {
-        reset({ comment: '' })
-        router.refresh()
-      })
-      .catch((err) => {
-        TError('哪裡發生錯誤，請再試一次')
-        console.error(err)
-      })
-      .finally(() => setIsLoading(false))
-  }
+  const currentUser = useUserSession()
+
   return (
     <>
       <Loading isLoading={isLoading} />
@@ -55,7 +38,7 @@ const CommentInput: React.FC<CommentInputProps> = ({ tweet }) => {
             @{tweet?.author.userId}
           </Link>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className='col-start-2 row-start-2'>
+        <form onSubmit={formSubmit} className='col-start-2 row-start-2'>
           <Textarea register={register} id={'comment'} placeholder='推你的回覆!' />
           <div className='flex justify-end'>
             <div className='w-20'>

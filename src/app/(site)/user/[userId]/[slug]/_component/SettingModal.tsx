@@ -17,6 +17,7 @@ import Input from '@/components/input/Input'
 import Textarea from '@/components/input/Textarea'
 import Modal from '@/components/modal/Modal'
 import TSuccess from '@/components/toast/TSuccess'
+import SettingCheckModal from './SettingCheckModal'
 
 interface SettingModalProps {
   onClose: () => void
@@ -26,6 +27,7 @@ interface SettingModalProps {
 
 const SettingModal: React.FC<SettingModalProps> = ({ onClose, isOpen, data }) => {
   const router = useRouter()
+  const [isOpenCheckModal, setIsOpenCheckModal] = useState(false)
   const [newackgroundUrl, setNewBackgroundUrl] = useState(data.profileBackground)
   const [newImageUrl, setNewImageUrl] = useState(data.image)
   const [isLoading, setIsLoading] = useState(false)
@@ -69,15 +71,22 @@ const SettingModal: React.FC<SettingModalProps> = ({ onClose, isOpen, data }) =>
 
   return (
     <>
+      <SettingCheckModal
+        onClose={() => setIsOpenCheckModal(false)}
+        isOpen={isOpenCheckModal}
+        checkClose={onClose}
+      />
+
       <Loading isLoading={isLoading} />
-      <Modal isOpenModal={isOpen} onClose={onClose}>
+
+      <Modal isOpenModal={isOpen} onClose={() => setIsOpenCheckModal(true)}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='flex items-center justify-between p-4'>
             <div className='flex items-center space-x-3'>
               <IoClose
                 size={20}
                 className='cursor-pointer text-white'
-                onClick={onClose}
+                onClick={() => setIsOpenCheckModal(true)}
               />
               <span className=' font-bold text-white'>編輯個人資料</span>
             </div>

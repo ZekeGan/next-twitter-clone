@@ -3,14 +3,11 @@ import { getServerSession } from 'next-auth'
 import prisma from '@/libs/prismadb'
 import getCurrentUser from './getCurrentUser'
 
-const getFollowing = async () => {
+const getFollowing = async (userId: string) => {
   try {
-    const currentUser = await getCurrentUser()
-    if (!currentUser) return []
-
     const followingUsers = await prisma.user.findUnique({
-      where: { id: currentUser.id },
-      select: { following: true },
+      where: { userId: userId },
+      select: { following: { orderBy: { name: 'asc' } } },
     })
     if (!followingUsers?.following) return []
 
