@@ -1,5 +1,4 @@
 # Twitter Clone 介紹
-
 # 使用技術
 - Nextjs 13   : 框架我選擇 Nextjs，他提供的 SSR 和 SSG 對 SEO 更友好，對頁面載入也快，對用戶的隱私更能起到作用
 - Tailwind    : CSS框架方面 我選擇Tailwind，因為它能夠更快速的定義CSS，而且他的高度自訂性讓我更能客製化的創建UI元件
@@ -7,10 +6,10 @@
 - Typescript  : 讓我在編寫網頁時能夠及時回報錯誤，降低專案上線時的 Bug 機率
 - MongoDB     : 資料庫我選擇了 MongoDB，因為它提供了線上的資料庫管理Atlas，和雲端的資料庫儲存服務 
 - Prisma      : 資料庫串接方面，Prisma 提供了更簡單的方式讓我管理和操作資料庫
-- cloudinary  :
+- cloudinary  : 圖片和影片的雲端儲存
+
 
 # 架構設計
-
 ## 目錄結構
 我根據不同職責來區分不同資料夾
 + src/
@@ -68,7 +67,6 @@ Twitter 有許多 Tabs 頁面，在Tabs切換我也是利用動態路由來達�
   │
 ```
 
-
 ## 資料庫設計
 我使用 Prisma 定義了資料庫的模型，位置在 `./prisma/schema.prisma`。主要由四大 collection 組成，User, Tweet, Account, Notification
 
@@ -76,8 +74,7 @@ Twitter 有許多 Tabs 頁面，在Tabs切換我也是利用動態路由來達�
 + 追蹤User: User 可以追隨多名 User，也可以被多名 User 追蹤，所以是自身多對多
 ```prisma
 model User {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
   followBy     User[]   @relation("Follow", fields: [followByIds], references: [id])
   followByIds  String[] @db.ObjectId
   following    User[]   @relation("Follow", fields: [followingIds], references: [id])
@@ -91,7 +88,6 @@ model User {
   id     String  @id @default(auto()) @map("_id") @db.ObjectId
   tweets Tweet[] @relation("UserPosts")
 }
-
 model Tweet {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   content  String?
@@ -109,7 +105,6 @@ model User {
   retweetTweets    Tweet[]  @relation("Retweet", fields: [retweetTweetsIds], references: [id])
   retweetTweetsIds String[] @db.ObjectId
 }
-
 model Tweet {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   likeFrom       User[]   @relation("LikeTweets", fields: [likeFromIds], references: [id])
@@ -118,7 +113,6 @@ model Tweet {
   retweetFromIds String[] @db.ObjectId
 }
 ```
-
 
 + 留言: 推文可以被留言，該留言也可以被留言，所以可以把一則留言視為一個Tweet。留言只可以回覆一則推文，但是一則推文可以擁有多則留言，所以是 Tweet 的自身一對多
 ```prisma
@@ -143,13 +137,11 @@ model User {
   notifications   Notification[] @relation("notices", fields: [notificationsId], references: [id])
   notificationsId String[]       @db.ObjectId
 }
-
 model Tweet {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   content      String?
   notification Notification?
 }
-
 model Notification {
   id        String           @id @default(auto()) @map("_id") @db.ObjectId
 
@@ -164,10 +156,13 @@ model Notification {
 }
 ```
 
-## 第三方服務的整合
 
+## 第三方服務的整合
 ### MongoDB / Atlas
 我選擇 MongoDB 是由於它提供了雲端的資料儲存，還有管理資料庫的系統 Altas，這讓我很方便的搭建我的系統而不需要考慮資料庫建構 
+
+### cloudinary
+由於他的免費儲存額度和對 React 的支援，雲端儲存圖片我選擇了 `cloudinary`
 
 ### Prisma
 由於我對資料庫方面的理解甚少，而 Prisma 提供了簡易的資料庫 CRUD 功能，讓對 SQL 語法不太熟悉的我提供了快速的查找和搜尋。而 schema.prisma 讓之後開發時更能快速的回顧資料庫的結構 
@@ -193,8 +188,6 @@ model Notification {
 
 ### date-fns
 方便的自定義格式化的時間戳資料
-
-
 
 
 # 解決的挑戰
