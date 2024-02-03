@@ -84,11 +84,11 @@ const AuthForm = () => {
         {varient === 'Login' && (
           <>
             <div className='space-y-4 mt-5 flex flex-col'>
-              <SocialAuthButton
+              {/* <SocialAuthButton
                 icon={BsGoogle}
                 text='使用Google登入'
                 onClick={() => handleSocialAuth('google')}
-              />
+              /> */}
               <SocialAuthButton
                 icon={BsGithub}
                 text='使用Github登入'
