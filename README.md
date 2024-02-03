@@ -1,4 +1,8 @@
 # Twitter Clone 介紹
+
+
+[Visit on Vercel](https://next-twitter-clone-azure.vercel.app/auth)
+
 # 使用技術
 - Nextjs 13   : 框架我選擇 Nextjs，他提供的 SSR 和 SSG 對 SEO 更友好，對頁面載入也快，對用戶的隱私更能起到作用
 - Tailwind    : CSS框架方面 我選擇Tailwind，因為它能夠更快速的定義CSS，而且他的高度自訂性讓我更能客製化的創建UI元件
